@@ -1,0 +1,6 @@
+{
+  "name": "Pengatur Keuangan Pribadi",
+  "description": "Aplikasi pengatur keuangan pribadi dengan analisis pola pengeluaran & saran finansial otomatis Gemini AI, alokasi gaji otomatis, multi-sumber pemasukan, kustomisasi pos anggaran, pelacakan target finansial & investasi, lampiran bukti/struk transaksi terkompresi, rencana bulan depan, dan sistem peringatan anti-boncos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
