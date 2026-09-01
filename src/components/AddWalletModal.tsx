@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wallet } from '../types';
 import { DynamicIcon } from './DynamicIcon';
 import { X, CreditCard, DollarSign, Wallet as WalletIcon, Check, Landmark, Smartphone, Banknote, TrendingUp } from 'lucide-react';
@@ -30,14 +30,37 @@ export const AddWalletModal: React.FC<AddWalletModalProps> = ({
   onSave,
   editingWallet,
 }) => {
-  const [name, setName] = useState(editingWallet?.name || '');
-  const [type, setType] = useState<Wallet['type']>(editingWallet?.type || 'bank');
-  const [initialBalance, setInitialBalance] = useState(editingWallet ? editingWallet.initialBalance.toString() : '0');
-  const [accountNumber, setAccountNumber] = useState(editingWallet?.accountNumber || '');
-  const [icon, setIcon] = useState(editingWallet?.icon || 'Landmark');
-  const [color, setColor] = useState(editingWallet?.color || '#3b82f6');
-  const [notes, setNotes] = useState(editingWallet?.notes || '');
+  const [name, setName] = useState('');
+  const [type, setType] = useState<Wallet['type']>('bank');
+  const [initialBalance, setInitialBalance] = useState('0');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [icon, setIcon] = useState('Landmark');
+  const [color, setColor] = useState('#3b82f6');
+  const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<{ name?: string; balance?: string }>({});
+
+  useEffect(() => {
+    if (editingWallet) {
+      setName(editingWallet.name || '');
+      setType(editingWallet.type || 'bank');
+      setInitialBalance(
+        editingWallet.initialBalance !== undefined ? editingWallet.initialBalance.toString() : '0'
+      );
+      setAccountNumber(editingWallet.accountNumber || '');
+      setIcon(editingWallet.icon || 'Landmark');
+      setColor(editingWallet.color || '#3b82f6');
+      setNotes(editingWallet.notes || '');
+    } else {
+      setName('');
+      setType('bank');
+      setInitialBalance('0');
+      setAccountNumber('');
+      setIcon('Landmark');
+      setColor('#3b82f6');
+      setNotes('');
+    }
+    setErrors({});
+  }, [editingWallet, isOpen]);
 
   if (!isOpen) return null;
 

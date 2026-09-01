@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, DollarSign, RefreshCw, Check, Sparkles } from 'lucide-react';
 import { formatRupiah, parseRupiahInput } from '../utils/formatters';
 import { BUDGET_PRESETS } from '../utils/presets';
@@ -16,9 +16,15 @@ export const SalaryEditModal: React.FC<SalaryEditModalProps> = ({
   currentIncome,
   onUpdateSalary,
 }) => {
-  const [incomeInput, setIncomeInput] = useState<string>(currentIncome.toString());
+  const [incomeInput, setIncomeInput] = useState<string>(currentIncome ? currentIncome.toString() : '');
   const [reapplyMode, setReapplyMode] = useState<'proportional' | 'preset'>('proportional');
   const [selectedPresetId, setSelectedPresetId] = useState<string>('standar_seimbang');
+
+  useEffect(() => {
+    if (isOpen) {
+      setIncomeInput(currentIncome ? currentIncome.toString() : '');
+    }
+  }, [currentIncome, isOpen]);
 
   if (!isOpen) return null;
 

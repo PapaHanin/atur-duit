@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RecurringBill, Category, Wallet } from '../types';
 import { DynamicIcon } from './DynamicIcon';
 import { X, Calendar, DollarSign, Tag, Clock, Bell, Check, Zap } from 'lucide-react';
@@ -41,17 +41,44 @@ export const AddBillModal: React.FC<AddBillModalProps> = ({
   wallets = [],
   editingBill,
 }) => {
-  const [name, setName] = useState(editingBill?.name || '');
-  const [amount, setAmount] = useState(editingBill ? editingBill.amount.toString() : '');
-  const [dueDateDay, setDueDateDay] = useState(editingBill ? editingBill.dueDateDay : 10);
-  const [categoryId, setCategoryId] = useState(editingBill?.categoryId || categories[0]?.id || '');
-  const [walletId, setWalletId] = useState(editingBill?.walletId || (wallets[0]?.id || ''));
-  const [frequency, setFrequency] = useState<'monthly' | 'yearly' | 'weekly'>(editingBill?.frequency || 'monthly');
-  const [icon, setIcon] = useState(editingBill?.icon || 'Zap');
-  const [color, setColor] = useState(editingBill?.color || '#06b6d4');
-  const [reminderDaysBefore, setReminderDaysBefore] = useState(editingBill?.reminderDaysBefore || 3);
-  const [notes, setNotes] = useState(editingBill?.notes || '');
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [dueDateDay, setDueDateDay] = useState(10);
+  const [categoryId, setCategoryId] = useState(categories[0]?.id || '');
+  const [walletId, setWalletId] = useState(wallets[0]?.id || '');
+  const [frequency, setFrequency] = useState<'monthly' | 'yearly' | 'weekly'>('monthly');
+  const [icon, setIcon] = useState('Zap');
+  const [color, setColor] = useState('#06b6d4');
+  const [reminderDaysBefore, setReminderDaysBefore] = useState(3);
+  const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<{ name?: string; amount?: string }>({});
+
+  useEffect(() => {
+    if (editingBill) {
+      setName(editingBill.name || '');
+      setAmount(editingBill.amount !== undefined ? editingBill.amount.toString() : '');
+      setDueDateDay(editingBill.dueDateDay || 10);
+      setCategoryId(editingBill.categoryId || categories[0]?.id || '');
+      setWalletId(editingBill.walletId || wallets[0]?.id || '');
+      setFrequency(editingBill.frequency || 'monthly');
+      setIcon(editingBill.icon || 'Zap');
+      setColor(editingBill.color || '#06b6d4');
+      setReminderDaysBefore(editingBill.reminderDaysBefore || 3);
+      setNotes(editingBill.notes || '');
+    } else {
+      setName('');
+      setAmount('');
+      setDueDateDay(10);
+      setCategoryId(categories[0]?.id || '');
+      setWalletId(wallets[0]?.id || '');
+      setFrequency('monthly');
+      setIcon('Zap');
+      setColor('#06b6d4');
+      setReminderDaysBefore(3);
+      setNotes('');
+    }
+    setErrors({});
+  }, [editingBill, isOpen, categories, wallets]);
 
   if (!isOpen) return null;
 

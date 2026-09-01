@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wallet, WalletTransfer } from '../types';
 import { DynamicIcon } from './DynamicIcon';
 import { X, ArrowRightLeft, DollarSign, Calendar, Check, AlertCircle } from 'lucide-react';
@@ -23,6 +23,18 @@ export const WalletTransferModal: React.FC<WalletTransferModalProps> = ({
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [notes, setNotes] = useState('');
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setFromWalletId(wallets[0]?.id || '');
+      setToWalletId(wallets[1]?.id || wallets[0]?.id || '');
+      setAmount('');
+      setFee('');
+      setDate(new Date().toISOString().slice(0, 10));
+      setNotes('');
+      setError(null);
+    }
+  }, [isOpen, wallets]);
 
   if (!isOpen || wallets.length < 2) return null;
 
